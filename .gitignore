@@ -34,6 +34,11 @@ backend/target/
 node_modules/
 frontend/dist/
 
+# Deployment secrets
+.env
+.env.*
+!.env.example
+
 # Local databases and debug logs — never commit real or test data
 *.db
 *.sqlite3
