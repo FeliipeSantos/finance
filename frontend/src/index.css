@@ -1,0 +1,90 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+:root {
+  color-scheme: dark;
+  --color-bg: #111111;
+  --color-page: #111111;
+  --color-icon-strip: #0C0C0C;
+  --color-sidebar: #0C0C0C;
+  --color-surface: #1E1F27;
+  --color-panel: #1E1F27;
+  --color-surface-2: #262733;
+  --color-surface-raised: #262733;
+  --color-input: #1E1F27;
+  --color-table-header: #22232D;
+  --color-primary: #394BBF;
+  --color-primary-text: #8A98F1;
+  --color-primary-dark: #26368A;
+  --color-primary-rgb: 57, 75, 191;
+  --color-primary-soft: rgba(57, 75, 191, 0.12);
+  --color-secondary: #E66B78;
+  --color-text: #F5F6FA;
+  --color-text-primary: #F5F6FA;
+  --color-muted: #979CAE;
+  --color-text-secondary: #979CAE;
+  --color-border: rgba(255, 255, 255, 0.07);
+  --color-overlay-rgb: 255, 255, 255;
+  --color-shadow-rgb: 0, 0, 0;
+  --color-income: #35C3A3;
+  --color-expense: #E66B78;
+  --color-warning: #DDB06C;
+  --color-scrollbar: #353743;
+  --color-scrollbar-hover: #515568;
+  --shadow-panel: 0 2px 8px rgba(0, 0, 0, 0.08);
+  --shadow-popover: 0 12px 36px rgba(0, 0, 0, 0.28);
+}
+
+/* Shared tokens cover pages and dialogs rendered through React portals. */
+:root[data-color-mode='light'] {
+  color-scheme: light;
+  --color-bg: #F7F8FC;
+  --color-page: #F7F8FC;
+  --color-icon-strip: #FFFFFF;
+  --color-sidebar: #FFFFFF;
+  --color-surface: #FFFFFF;
+  --color-panel: #FFFFFF;
+  --color-surface-2: #F0F2F8;
+  --color-surface-raised: #FFFFFF;
+  --color-input: #F7F8FC;
+  --color-table-header: #FAFBFE;
+  --color-primary: #3447AA;
+  --color-primary-text: #3447AA;
+  --color-primary-rgb: 52, 71, 170;
+  --color-primary-soft: rgba(52, 71, 170, 0.08);
+  --color-secondary: #BF4052;
+  --color-text: #171A23;
+  --color-text-primary: #171A23;
+  --color-muted: #626D7B;
+  --color-text-secondary: #626D7B;
+  --color-border: rgba(31, 42, 68, 0.08);
+  --color-overlay-rgb: 31, 42, 68;
+  --color-shadow-rgb: 31, 42, 68;
+  --color-income: #16846F;
+  --color-expense: #BF4052;
+  --color-warning: #956015;
+  --color-scrollbar: #CDD2E1;
+  --color-scrollbar-hover: #ABB3C9;
+  --shadow-panel: 0 2px 8px rgba(31, 42, 68, 0.025);
+  --shadow-popover: 0 12px 36px rgba(31, 42, 68, 0.12);
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  padding: 0;
+  background-color: var(--color-bg);
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica', 'Arial', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  color: var(--color-text);
+}
+
+::-webkit-scrollbar { width: 5px; height: 5px; }
+::-webkit-scrollbar-track { background: var(--color-bg); }
+::-webkit-scrollbar-thumb { background: var(--color-scrollbar); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--color-scrollbar-hover); }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { scroll-behavior: auto !important; transition-duration: 0.01ms !important; }
+}

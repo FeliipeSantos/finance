@@ -1,0 +1,984 @@
+[
+  {
+    "name": "Carteira",
+    "type": "ACCOUNTS",
+    "color": "#26C6DA",
+    "icon": "CardIcon",
+    "subcategories": []
+  },
+  {
+    "name": "Conta Corrente",
+    "type": "ACCOUNTS",
+    "color": "#4EBE87",
+    "icon": "AccountBalanceIcon",
+    "subcategories": []
+  },
+  {
+    "name": "Investimentos",
+    "type": "ACCOUNTS",
+    "color": "#42A5F5",
+    "icon": "ShowChartIcon",
+    "subcategories": []
+  },
+  {
+    "name": "Outros",
+    "type": "ACCOUNTS",
+    "color": "#7E8494",
+    "icon": "HelpIcon",
+    "subcategories": []
+  },
+  {
+    "name": "Moradia",
+    "type": "EXPENSE",
+    "color": "#7E57C2",
+    "icon": "HomeIcon",
+    "subcategories": [
+      {
+        "name": "Aluguel",
+        "icon": "ApartmentIcon",
+        "color": "#7E57C2"
+      },
+      {
+        "name": "Condomínio",
+        "icon": "ApartmentIcon",
+        "color": "#7E57C2"
+      },
+      {
+        "name": "Energia elétrica",
+        "icon": "BoltIcon",
+        "color": "#7E57C2"
+      },
+      {
+        "name": "Água",
+        "icon": "WaterDropIcon",
+        "color": "#7E57C2"
+      },
+      {
+        "name": "Gás",
+        "icon": "LocalFireDepartmentIcon",
+        "color": "#7E57C2"
+      },
+      {
+        "name": "Internet",
+        "icon": "WifiIcon",
+        "color": "#7E57C2"
+      },
+      {
+        "name": "Telefone",
+        "icon": "PhoneIcon",
+        "color": "#7E57C2"
+      },
+      {
+        "name": "IPTU",
+        "icon": "ReceiptLongIcon",
+        "color": "#7E57C2"
+      },
+      {
+        "name": "Manutenção",
+        "icon": "HomeRepairServiceIcon",
+        "color": "#7E57C2"
+      },
+      {
+        "name": "Móveis",
+        "icon": "ChairIcon",
+        "color": "#7E57C2"
+      },
+      {
+        "name": "Eletrodomésticos",
+        "icon": "KitchenIcon",
+        "color": "#7E57C2"
+      },
+      {
+        "name": "Decoração",
+        "icon": "WeekendIcon",
+        "color": "#7E57C2"
+      },
+      {
+        "name": "Limpeza",
+        "icon": "CleaningServicesIcon",
+        "color": "#7E57C2"
+      }
+    ]
+  },
+  {
+    "name": "Alimentação",
+    "type": "EXPENSE",
+    "color": "#EC407A",
+    "icon": "RestaurantIcon",
+    "subcategories": [
+      {
+        "name": "Supermercado",
+        "icon": "LocalGroceryStoreIcon",
+        "color": "#EC407A"
+      },
+      {
+        "name": "Feira / Hortifruti",
+        "icon": "GrassIcon",
+        "color": "#EC407A"
+      },
+      {
+        "name": "Padaria",
+        "icon": "BakeryDiningIcon",
+        "color": "#EC407A"
+      },
+      {
+        "name": "Restaurante",
+        "icon": "RestaurantIcon",
+        "color": "#EC407A"
+      },
+      {
+        "name": "Delivery",
+        "icon": "DeliveryDiningIcon",
+        "color": "#EC407A"
+      },
+      {
+        "name": "Lanches",
+        "icon": "FastfoodIcon",
+        "color": "#EC407A"
+      },
+      {
+        "name": "Cafés",
+        "icon": "LocalCafeIcon",
+        "color": "#EC407A"
+      },
+      {
+        "name": "Bebidas",
+        "icon": "LocalBarIcon",
+        "color": "#EC407A"
+      },
+      {
+        "name": "Alimentação no trabalho",
+        "icon": "LunchDiningIcon",
+        "color": "#EC407A"
+      }
+    ]
+  },
+  {
+    "name": "Transporte",
+    "type": "EXPENSE",
+    "color": "#FB8C00",
+    "icon": "DirectionsCarIcon",
+    "subcategories": [
+      {
+        "name": "Combustível",
+        "icon": "LocalGasStationIcon",
+        "color": "#FB8C00"
+      },
+      {
+        "name": "Uber / 99",
+        "icon": "LocalTaxiIcon",
+        "color": "#FB8C00"
+      },
+      {
+        "name": "Transporte público",
+        "icon": "DirectionsBusIcon",
+        "color": "#FB8C00"
+      },
+      {
+        "name": "Estacionamento",
+        "icon": "LocalParkingIcon",
+        "color": "#FB8C00"
+      },
+      {
+        "name": "Pedágio",
+        "icon": "TollIcon",
+        "color": "#FB8C00"
+      },
+      {
+        "name": "Manutenção",
+        "icon": "BuildIcon",
+        "color": "#FB8C00"
+      },
+      {
+        "name": "Seguro",
+        "icon": "ShieldIcon",
+        "color": "#FB8C00"
+      },
+      {
+        "name": "IPVA",
+        "icon": "ReceiptIcon",
+        "color": "#FB8C00"
+      },
+      {
+        "name": "Licenciamento",
+        "icon": "DescriptionIcon",
+        "color": "#FB8C00"
+      },
+      {
+        "name": "Lavagem",
+        "icon": "LocalCarWashIcon",
+        "color": "#FB8C00"
+      },
+      {
+        "name": "Multas",
+        "icon": "ReportProblemIcon",
+        "color": "#FB8C00"
+      },
+      {
+        "name": "Parcela do veículo",
+        "icon": "RequestQuoteIcon",
+        "color": "#FB8C00"
+      }
+    ]
+  },
+  {
+    "name": "Financeiro",
+    "type": "EXPENSE",
+    "color": "#5C6BC0",
+    "icon": "CardIcon",
+    "subcategories": [
+      {
+        "name": "Tarifas bancárias",
+        "icon": "AccountBalanceIcon",
+        "color": "#5C6BC0"
+      },
+      {
+        "name": "Juros",
+        "icon": "PercentIcon",
+        "color": "#5C6BC0"
+      },
+      {
+        "name": "IOF",
+        "icon": "CurrencyExchangeIcon",
+        "color": "#5C6BC0"
+      },
+      {
+        "name": "Multas / encargos",
+        "icon": "ReportProblemIcon",
+        "color": "#5C6BC0"
+      },
+      {
+        "name": "Empréstimos",
+        "icon": "RequestQuoteIcon",
+        "color": "#5C6BC0"
+      },
+      {
+        "name": "Financiamentos",
+        "icon": "PaymentsIcon",
+        "color": "#5C6BC0"
+      }
+    ]
+  },
+  {
+    "name": "Compras",
+    "type": "EXPENSE",
+    "color": "#F06292",
+    "icon": "ShoppingCartIcon",
+    "subcategories": [
+      {
+        "name": "Roupas",
+        "icon": "CheckroomIcon",
+        "color": "#F06292"
+      },
+      {
+        "name": "Calçados",
+        "icon": "ShoppingBagIcon",
+        "color": "#F06292"
+      },
+      {
+        "name": "Eletrônicos",
+        "icon": "DevicesIcon",
+        "color": "#F06292"
+      },
+      {
+        "name": "Casa",
+        "icon": "ChairIcon",
+        "color": "#F06292"
+      },
+      {
+        "name": "Acessórios",
+        "icon": "WatchIcon",
+        "color": "#F06292"
+      },
+      {
+        "name": "Presentes",
+        "icon": "RedeemIcon",
+        "color": "#F06292"
+      },
+      {
+        "name": "Compras online",
+        "icon": "ShoppingCartIcon",
+        "color": "#F06292"
+      },
+      {
+        "name": "Outros",
+        "icon": "MoreHorizIcon",
+        "color": "#F06292"
+      }
+    ]
+  },
+  {
+    "name": "Cartões de crédito",
+    "type": "EXPENSE",
+    "color": "#7986CB",
+    "icon": "CreditCardIcon",
+    "subcategories": [
+      {
+        "name": "Outros",
+        "icon": "CategoryIcon",
+        "color": "#7986CB"
+      },
+      {
+        "name": "Adiantamento fatura",
+        "icon": "CategoryIcon",
+        "color": "#4EBE87"
+      },
+      {
+        "name": "Ajustes",
+        "icon": "CategoryIcon",
+        "color": "#FDD835"
+      },
+      {
+        "name": "Anuidade",
+        "icon": "CreditCardIcon",
+        "color": "#E57373"
+      },
+      {
+        "name": "Estornos",
+        "icon": "CategoryIcon",
+        "color": "#64B5F6"
+      }
+    ]
+  },
+  {
+    "name": "Saúde",
+    "type": "EXPENSE",
+    "color": "#E53935",
+    "icon": "LocalHospitalIcon",
+    "subcategories": [
+      {
+        "name": "Plano de saúde",
+        "icon": "HealthAndSafetyIcon",
+        "color": "#E53935"
+      },
+      {
+        "name": "Consultas",
+        "icon": "MedicalServicesIcon",
+        "color": "#E53935"
+      },
+      {
+        "name": "Exames",
+        "icon": "MonitorHeartIcon",
+        "color": "#E53935"
+      },
+      {
+        "name": "Medicamentos",
+        "icon": "MedicationIcon",
+        "color": "#E53935"
+      },
+      {
+        "name": "Dentista",
+        "icon": "HealingIcon",
+        "color": "#E53935"
+      },
+      {
+        "name": "Óculos",
+        "icon": "VisibilityIcon",
+        "color": "#E53935"
+      },
+      {
+        "name": "Terapias",
+        "icon": "PsychologyIcon",
+        "color": "#E53935"
+      },
+      {
+        "name": "Academia / atividade física",
+        "icon": "FitnessCenterIcon",
+        "color": "#E53935"
+      }
+    ]
+  },
+  {
+    "name": "Lazer e Entretenimento",
+    "type": "EXPENSE",
+    "color": "#FDD835",
+    "icon": "GameIcon",
+    "subcategories": [
+      {
+        "name": "Cinema",
+        "icon": "MovieIcon",
+        "color": "#FDD835"
+      },
+      {
+        "name": "Shows / eventos",
+        "icon": "TheaterComedyIcon",
+        "color": "#FDD835"
+      },
+      {
+        "name": "Jogos",
+        "icon": "GameIcon",
+        "color": "#FDD835"
+      },
+      {
+        "name": "Streaming",
+        "icon": "LiveTvIcon",
+        "color": "#FDD835"
+      },
+      {
+        "name": "Restaurantes / bares",
+        "icon": "LocalBarIcon",
+        "color": "#FDD835"
+      },
+      {
+        "name": "Viagens",
+        "icon": "LuggageIcon",
+        "color": "#FDD835"
+      },
+      {
+        "name": "Hobbies",
+        "icon": "EmojiObjectsIcon",
+        "color": "#FDD835"
+      },
+      {
+        "name": "Passeios",
+        "icon": "AttractionsIcon",
+        "color": "#FDD835"
+      },
+      {
+        "name": "Assinaturas",
+        "icon": "SubscriptionsIcon",
+        "color": "#FDD835"
+      }
+    ]
+  },
+  {
+    "name": "Tecnologia e Assinaturas",
+    "type": "EXPENSE",
+    "color": "#29B6F6",
+    "icon": "PhoneIphoneIcon",
+    "subcategories": [
+      {
+        "name": "Celular",
+        "icon": "PhoneIphoneIcon",
+        "color": "#29B6F6"
+      },
+      {
+        "name": "Aplicativos",
+        "icon": "AppsIcon",
+        "color": "#29B6F6"
+      },
+      {
+        "name": "Software",
+        "icon": "CodeIcon",
+        "color": "#29B6F6"
+      },
+      {
+        "name": "Cloud / armazenamento",
+        "icon": "CloudQueueIcon",
+        "color": "#29B6F6"
+      },
+      {
+        "name": "Streaming",
+        "icon": "LiveTvIcon",
+        "color": "#29B6F6"
+      },
+      {
+        "name": "Serviços digitais",
+        "icon": "DevicesIcon",
+        "color": "#29B6F6"
+      },
+      {
+        "name": "Assinaturas profissionais",
+        "icon": "BusinessCenterIcon",
+        "color": "#29B6F6"
+      }
+    ]
+  },
+  {
+    "name": "Cuidados Pessoais",
+    "type": "EXPENSE",
+    "color": "#AB47BC",
+    "icon": "CheckroomIcon",
+    "subcategories": [
+      {
+        "name": "Barbearia / cabeleireiro",
+        "icon": "ContentCutIcon",
+        "color": "#AB47BC"
+      },
+      {
+        "name": "Cosméticos",
+        "icon": "BrushIcon",
+        "color": "#AB47BC"
+      },
+      {
+        "name": "Higiene pessoal",
+        "icon": "BathtubIcon",
+        "color": "#AB47BC"
+      },
+      {
+        "name": "Roupas",
+        "icon": "CheckroomIcon",
+        "color": "#AB47BC"
+      },
+      {
+        "name": "Estética",
+        "icon": "Face3Icon",
+        "color": "#AB47BC"
+      },
+      {
+        "name": "Academia",
+        "icon": "FitnessCenterIcon",
+        "color": "#AB47BC"
+      },
+      {
+        "name": "Outros",
+        "icon": "HelpIcon",
+        "color": "#AB47BC"
+      }
+    ]
+  },
+  {
+    "name": "Educação",
+    "type": "EXPENSE",
+    "color": "#8D6E63",
+    "icon": "SchoolIcon",
+    "subcategories": [
+      {
+        "name": "Cursos",
+        "icon": "SchoolIcon",
+        "color": "#8D6E63"
+      },
+      {
+        "name": "Faculdade / escola",
+        "icon": "AccountBalanceIcon",
+        "color": "#8D6E63"
+      },
+      {
+        "name": "Livros",
+        "icon": "MenuBookIcon",
+        "color": "#8D6E63"
+      },
+      {
+        "name": "Material escolar",
+        "icon": "AutoStoriesIcon",
+        "color": "#8D6E63"
+      },
+      {
+        "name": "Certificações",
+        "icon": "EmojiEventsIcon",
+        "color": "#8D6E63"
+      },
+      {
+        "name": "Cursos online",
+        "icon": "OndemandVideoIcon",
+        "color": "#8D6E63"
+      },
+      {
+        "name": "Idiomas",
+        "icon": "TranslateIcon",
+        "color": "#8D6E63"
+      }
+    ]
+  },
+  {
+    "name": "Viagens",
+    "type": "EXPENSE",
+    "color": "#00ACC1",
+    "icon": "FlightIcon",
+    "subcategories": [
+      {
+        "name": "Passagens",
+        "icon": "FlightIcon",
+        "color": "#00ACC1"
+      },
+      {
+        "name": "Hospedagem",
+        "icon": "HotelIcon",
+        "color": "#00ACC1"
+      },
+      {
+        "name": "Alimentação",
+        "icon": "RestaurantIcon",
+        "color": "#00ACC1"
+      },
+      {
+        "name": "Transporte",
+        "icon": "DirectionsCarIcon",
+        "color": "#00ACC1"
+      },
+      {
+        "name": "Passeios",
+        "icon": "ExploreIcon",
+        "color": "#00ACC1"
+      },
+      {
+        "name": "Compras",
+        "icon": "ShoppingBagIcon",
+        "color": "#00ACC1"
+      },
+      {
+        "name": "Seguro viagem",
+        "icon": "ShieldIcon",
+        "color": "#00ACC1"
+      }
+    ]
+  },
+  {
+    "name": "Pets",
+    "type": "EXPENSE",
+    "color": "#6D4C41",
+    "icon": "PetsIcon",
+    "subcategories": [
+      {
+        "name": "Alimentação",
+        "icon": "LocalGroceryStoreIcon",
+        "color": "#6D4C41"
+      },
+      {
+        "name": "Veterinário",
+        "icon": "LocalHospitalIcon",
+        "color": "#6D4C41"
+      },
+      {
+        "name": "Medicamentos",
+        "icon": "MedicationIcon",
+        "color": "#6D4C41"
+      },
+      {
+        "name": "Higiene",
+        "icon": "BathtubIcon",
+        "color": "#6D4C41"
+      },
+      {
+        "name": "Banho / tosa",
+        "icon": "ContentCutIcon",
+        "color": "#6D4C41"
+      },
+      {
+        "name": "Brinquedos",
+        "icon": "ToysIcon",
+        "color": "#6D4C41"
+      },
+      {
+        "name": "Acessórios",
+        "icon": "StyleIcon",
+        "color": "#6D4C41"
+      }
+    ]
+  },
+  {
+    "name": "Família",
+    "type": "EXPENSE",
+    "color": "#FF7043",
+    "icon": "FamilyRestroomIcon",
+    "subcategories": [
+      {
+        "name": "Ajuda familiar",
+        "icon": "VolunteerActivismIcon",
+        "color": "#FF7043"
+      },
+      {
+        "name": "Filhos",
+        "icon": "ChildCareIcon",
+        "color": "#FF7043"
+      },
+      {
+        "name": "Pais",
+        "icon": "ElderlyIcon",
+        "color": "#FF7043"
+      },
+      {
+        "name": "Pensões",
+        "icon": "PaymentsIcon",
+        "color": "#FF7043"
+      },
+      {
+        "name": "Presentes",
+        "icon": "RedeemIcon",
+        "color": "#FF7043"
+      },
+      {
+        "name": "Outras despesas familiares",
+        "icon": "HelpIcon",
+        "color": "#FF7043"
+      }
+    ]
+  },
+  {
+    "name": "Impostos e Obrigações",
+    "type": "EXPENSE",
+    "color": "#78909C",
+    "icon": "ReceiptLongIcon",
+    "subcategories": [
+      {
+        "name": "Imposto de renda",
+        "icon": "GavelIcon",
+        "color": "#78909C"
+      },
+      {
+        "name": "Taxas",
+        "icon": "PercentIcon",
+        "color": "#78909C"
+      },
+      {
+        "name": "Documentação",
+        "icon": "DescriptionIcon",
+        "color": "#78909C"
+      },
+      {
+        "name": "Multas",
+        "icon": "ReportProblemIcon",
+        "color": "#78909C"
+      },
+      {
+        "name": "Serviços públicos",
+        "icon": "ElectricalServicesIcon",
+        "color": "#78909C"
+      },
+      {
+        "name": "Outras obrigações",
+        "icon": "HelpIcon",
+        "color": "#78909C"
+      }
+    ]
+  },
+  {
+    "name": "Doações",
+    "type": "EXPENSE",
+    "color": "#D81B60",
+    "icon": "FavoriteIcon",
+    "subcategories": [
+      {
+        "name": "Doações",
+        "icon": "VolunteerActivismIcon",
+        "color": "#D81B60"
+      },
+      {
+        "name": "Presentes",
+        "icon": "RedeemIcon",
+        "color": "#D81B60"
+      },
+      {
+        "name": "Contribuições",
+        "icon": "FavoriteIcon",
+        "color": "#D81B60"
+      },
+      {
+        "name": "Ações sociais",
+        "icon": "GroupsIcon",
+        "color": "#D81B60"
+      }
+    ]
+  },
+  {
+    "name": "Empresa",
+    "type": "EXPENSE",
+    "color": "#37474F",
+    "icon": "BusinessCenterIcon",
+    "subcategories": [
+      {
+        "name": "INSS",
+        "icon": "AccountBalanceIcon",
+        "color": "#37474F"
+      },
+      {
+        "name": "Simples",
+        "icon": "ReceiptLongIcon",
+        "color": "#37474F"
+      },
+      {
+        "name": "Taxas",
+        "icon": "PercentIcon",
+        "color": "#37474F"
+      },
+      {
+        "name": "Seguro de vida",
+        "icon": "ShieldIcon",
+        "color": "#37474F"
+      },
+      {
+        "name": "Outros",
+        "icon": "HelpIcon",
+        "color": "#37474F"
+      }
+    ]
+  },
+  {
+    "name": "Outros",
+    "type": "EXPENSE",
+    "color": "#757575",
+    "icon": "Inventory2Icon",
+    "subcategories": [
+      {
+        "name": "Despesas diversas",
+        "icon": "MoreHorizIcon",
+        "color": "#757575"
+      },
+      {
+        "name": "Despesas não identificadas",
+        "icon": "QuestionMarkIcon",
+        "color": "#757575"
+      }
+    ]
+  },
+  {
+    "name": "Salário e Trabalho",
+    "type": "REVENUE",
+    "color": "#43A047",
+    "icon": "WorkIcon",
+    "subcategories": [
+      {
+        "name": "Salário",
+        "icon": "AttachMoneyIcon",
+        "color": "#43A047"
+      },
+      {
+        "name": "Adicional / Hora extra",
+        "icon": "MoreTimeIcon",
+        "color": "#43A047"
+      },
+      {
+        "name": "PLR / Bônus",
+        "icon": "StarIcon",
+        "color": "#43A047"
+      },
+      {
+        "name": "Comissão",
+        "icon": "PercentIcon",
+        "color": "#43A047"
+      },
+      {
+        "name": "Férias",
+        "icon": "BeachAccessIcon",
+        "color": "#43A047"
+      },
+      {
+        "name": "13º salário",
+        "icon": "PaymentsIcon",
+        "color": "#43A047"
+      },
+      {
+        "name": "Rescisão",
+        "icon": "WorkOffIcon",
+        "color": "#43A047"
+      }
+    ]
+  },
+  {
+    "name": "Renda Extra",
+    "type": "REVENUE",
+    "color": "#7CB342",
+    "icon": "HandymanIcon",
+    "subcategories": [
+      {
+        "name": "Freelance",
+        "icon": "LaptopIcon",
+        "color": "#7CB342"
+      },
+      {
+        "name": "Serviços",
+        "icon": "HandymanIcon",
+        "color": "#7CB342"
+      },
+      {
+        "name": "Venda de produtos",
+        "icon": "SellIcon",
+        "color": "#7CB342"
+      },
+      {
+        "name": "Trabalho eventual",
+        "icon": "EngineeringIcon",
+        "color": "#7CB342"
+      },
+      {
+        "name": "Gorjetas",
+        "icon": "PaidIcon",
+        "color": "#7CB342"
+      }
+    ]
+  },
+  {
+    "name": "Investimentos",
+    "type": "REVENUE",
+    "color": "#1E88E5",
+    "icon": "ChartIcon",
+    "subcategories": [
+      {
+        "name": "Dividendos",
+        "icon": "TrendingUpIcon",
+        "color": "#1E88E5"
+      },
+      {
+        "name": "Juros",
+        "icon": "PercentIcon",
+        "color": "#1E88E5"
+      },
+      {
+        "name": "Rendimentos",
+        "icon": "SavingsIcon",
+        "color": "#1E88E5"
+      },
+      {
+        "name": "Aluguéis",
+        "icon": "ApartmentIcon",
+        "color": "#1E88E5"
+      },
+      {
+        "name": "Resgate de investimentos",
+        "icon": "AccountBalanceWalletIcon",
+        "color": "#1E88E5"
+      },
+      {
+        "name": "Venda de ativos",
+        "icon": "SellIcon",
+        "color": "#1E88E5"
+      }
+    ]
+  },
+  {
+    "name": "Transferências / Reembolsos",
+    "type": "REVENUE",
+    "color": "#00897B",
+    "icon": "SwapHorizIcon",
+    "subcategories": [
+      {
+        "name": "Reembolso de despesas",
+        "icon": "RunIcon",
+        "color": "#00897B"
+      },
+      {
+        "name": "Devolução de compra",
+        "icon": "AssignmentReturnIcon",
+        "color": "#00897B"
+      },
+      {
+        "name": "Transferência recebida",
+        "icon": "CallReceivedIcon",
+        "color": "#00897B"
+      },
+      {
+        "name": "Empréstimo recebido",
+        "icon": "RequestQuoteIcon",
+        "color": "#00897B"
+      }
+    ]
+  },
+  {
+    "name": "Outras Receitas",
+    "type": "REVENUE",
+    "color": "#9CCC65",
+    "icon": "CardGiftcardIcon",
+    "subcategories": [
+      {
+        "name": "Presente recebido",
+        "icon": "RedeemIcon",
+        "color": "#9CCC65"
+      },
+      {
+        "name": "Cashback",
+        "icon": "LoyaltyIcon",
+        "color": "#9CCC65"
+      },
+      {
+        "name": "Prêmios",
+        "icon": "EmojiEventsIcon",
+        "color": "#9CCC65"
+      },
+      {
+        "name": "Outras receitas",
+        "icon": "HelpIcon",
+        "color": "#9CCC65"
+      }
+    ]
+  }
+]

@@ -1,0 +1,79 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: finance-postgres
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_DB: finance
+      POSTGRES_USER: finance_user
+      POSTGRES_PASSWORD: finance_secure_pass_2026
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - finance-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U finance_user -d finance"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  redis:
+    image: redis:7-alpine
+    container_name: finance-redis
+    ports:
+      - "6379:6379"
+    command: redis-server --requirepass redis_secure_pass_2026
+    volumes:
+      - redis_data:/data
+    networks:
+      - finance-network
+    healthcheck:
+      test: ["CMD", "redis-cli", "-a", "redis_secure_pass_2026", "ping"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  # Backend & Frontend will be enabled later as we build them, or we can configure them now for future docker-compose up
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: finance-backend
+    ports:
+      - "8080:8080"
+    environment:
+      - DATABASE_URL=postgresql://finance_user:finance_secure_pass_2026@postgres:5432/finance
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - REDIS_PASSWORD=redis_secure_pass_2026
+      - GEMINI_API_KEY=${GEMINI_API_KEY}
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    networks:
+      - finance-network
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: finance-frontend
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+    networks:
+      - finance-network
+
+volumes:
+  postgres_data:
+  redis_data:
+
+networks:
+  finance-network:
+    driver: bridge

@@ -1,0 +1,50 @@
+# Virtual environments
+backend/venv/
+venv/
+ENV/
+env/
+
+# Python cache
+**/__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+
+# IDE files
+.vscode/
+.idea/
+.claude/settings.local.json
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.swp
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# Project-specific temp/logs
+project-finance/brain/
+brain/
+lint_out.txt
+backend/target/
+
+# Node dependencies and frontend build
+node_modules/
+frontend/dist/
+
+# Local databases and debug logs — never commit real or test data
+*.db
+*.sqlite3
+debug.log
+
+# Local validation artifacts and databases
+validation/
+validation-*.json
+validation-*.xml
+backend/.validation-*/
+backend/.pytest_cache/
+backend/.validation-venv/
+
+tmp/
