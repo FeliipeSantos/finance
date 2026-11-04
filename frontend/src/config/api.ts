@@ -1,5 +1,12 @@
 import axios from 'axios';
 
+const createCorrelationId = () => {
+  if (typeof globalThis.crypto?.randomUUID === 'function') {
+    return globalThis.crypto.randomUUID();
+  }
+  return `corr-${Date.now().toString(36)}-${Math.random().toString(36).slice(2)}`;
+};
+
 const api = axios.create({
   baseURL: import.meta.env.VITE_API_URL || 'http://localhost:8080/api/v1',
   headers: {
@@ -17,7 +24,7 @@ api.interceptors.request.use(
     
     // Inject custom correlation-id if not already set (e.g. for trace logging)
     if (!config.headers['correlation-id']) {
-      config.headers['correlation-id'] = crypto.randomUUID();
+      config.headers['correlation-id'] = createCorrelationId();
     }
     
     return config;
