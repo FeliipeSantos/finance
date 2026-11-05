@@ -1,5 +1,6 @@
 import { Box, ButtonBase, Dialog, Typography } from '@mui/material';
 import { Sync, CalendarTodayOutlined, Autorenew } from '@mui/icons-material';
+import { transactionOverlaySx } from './TransactionFormLayout';
 
 const options = [
   { value: 'NP', label: 'Não recorrente', description: 'Lançamento único, sem repetição', icon: Sync, color: '#6D98FF' },
@@ -16,7 +17,7 @@ export default function RecurrenceDialog({ open, value, onClose, onSelect }: {
   onSelect: (value: RecurrenceType) => void;
 }) {
   return (
-    <Dialog open={open} onClose={onClose}
+    <Dialog open={open} onClose={onClose} sx={transactionOverlaySx}
       PaperProps={{ 'aria-label': 'Recorrência', sx: {
         width: 'calc(100% - 32px)', maxWidth: 328, m: 2, p: 1,
         borderRadius: '12px', bgcolor: 'var(--color-panel, #111217)', backgroundImage: 'none',

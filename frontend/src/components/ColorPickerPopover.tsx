@@ -59,6 +59,7 @@ const ColorPickerPopover: React.FC<ColorPickerPopoverProps> = ({
       open={Boolean(anchorEl)}
       anchorEl={anchorEl}
       onClose={onClose}
+      sx={{ zIndex: 1601 }}
       anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
       transformOrigin={{ vertical: 'top', horizontal: 'center' }}
       PaperProps={{

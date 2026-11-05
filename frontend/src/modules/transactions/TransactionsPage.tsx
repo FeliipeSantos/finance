@@ -4,7 +4,7 @@ import TransactionDetailsDialog from '../../components/TransactionDetailsDialog'
 import TransactionDescriptionText from '../../components/TransactionDescriptionText';
 import StatementView from './StatementView';
 import { editableTransactionDescription, isFixedTransaction, isInstallmentTransaction, restoreTransactionDescription, transactionDescription } from '../../utils/transactionDescription';
-import { TransactionField, TransactionAmountField, transactionPaperSx, transactionHeaderSx, transactionContentSx, transactionColumnsSx, transactionPanelSx, transactionHeadingSx } from '../../components/TransactionFormLayout';
+import { TransactionField, TransactionAmountField, transactionPaperSx, transactionHeaderSx, transactionContentSx, transactionColumnsSx, transactionPanelSx, transactionHeadingSx, transactionOverlaySx } from '../../components/TransactionFormLayout';
 import CardBrandLogo from '../../components/CardBrandLogo';
 import { useDetailSearchParams } from '../../hooks/useDetailSearchParams';
 import React, { useState, useEffect, useRef } from 'react';
@@ -807,7 +807,7 @@ const TransactionsPage: React.FC<TransactionsPageProps> = ({ composer, onCompose
           setDescriptionSuggestionsOpen(false);
         }
       }}
-      slotProps={{ popper: { sx: { zIndex: 1501 } } }}
+      slotProps={{ popper: { sx: { zIndex: 1601 } } }}
       sx={{ flex: 1, minWidth: 0, width: '100%' }}
       noOptionsText="Nenhum lançamento parecido encontrado"
       renderOption={(props, transaction) => {
@@ -2180,7 +2180,7 @@ const TransactionsPage: React.FC<TransactionsPageProps> = ({ composer, onCompose
                 if (newCard?.accountId) setTxAccountId(newCard.accountId);
                 const invoice = newCard ? getFirstOpenInvoice(newCard, new Date()) : undefined;
                 if (invoice) setTxDueDate(invoice.dueDateISO);
-              }} required variant="standard" InputProps={{ disableUnderline: true }} SelectProps={{ MenuProps: { sx: { zIndex: 1501 } } }}>
+              }} required variant="standard" InputProps={{ disableUnderline: true }} SelectProps={{ MenuProps: { sx: { zIndex: 1601 } } }}>
                 {cards.map((card) => <MenuItem key={card.id} value={card.id}><Box sx={{ display: 'flex', alignItems: 'center', gap: 1.25 }}><BankLogo icon={card.bank} customIconUrl={card.customIconUrl} name={card.name} /><Typography sx={{ flex: 1 }}>{card.name}</Typography><CardBrandLogo brand={card.brand} /></Box></MenuItem>)}
               </TextField>)}
               {renderFieldBox('Descrição', renderDescriptionInput())}
@@ -2192,7 +2192,7 @@ const TransactionsPage: React.FC<TransactionsPageProps> = ({ composer, onCompose
                 setDatePickerTarget('LANCAMENTO');
                 setDatePickerOpen(true);
               }} sx={{ display: 'flex', alignItems: 'center', gap: 1, width: '100%', cursor: 'pointer' }}><Typography sx={{ color: 'var(--color-text-primary, #FFFFFF)', fontSize: '0.9rem' }}>{formatDateToPtBr(txDate)}</Typography></Box>)}
-              {renderFieldBox('Fatura', <TextField select fullWidth value={txDueDate} onChange={(event) => setTxDueDate(event.target.value)} required variant="standard" InputProps={{ disableUnderline: true }} SelectProps={{ MenuProps: { sx: { zIndex: 1501 } } }}>
+              {renderFieldBox('Fatura', <TextField select fullWidth value={txDueDate} onChange={(event) => setTxDueDate(event.target.value)} required variant="standard" InputProps={{ disableUnderline: true }} SelectProps={{ MenuProps: { sx: { zIndex: 1601 } } }}>
                 {(() => {
                   const selectedCard = cards.find((card) => card.id === txCardId);
                   const invoices = selectedCard ? getInvoiceOptions(selectedCard, new Date(), 12, 13) : [];
@@ -2208,13 +2208,13 @@ const TransactionsPage: React.FC<TransactionsPageProps> = ({ composer, onCompose
                 setTxCategoryId(nextCategory);
                 const defaultSubcategory = categories.find((category) => category.parentCategoryId === nextCategory && category.name.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase() === 'estornos') || categories.find((category) => category.parentCategoryId === nextCategory);
                 setTxSubcategoryId(defaultSubcategory?.id || '');
-              }} required variant="standard" InputProps={{ disableUnderline: true }} SelectProps={{ MenuProps: { sx: { zIndex: 1501 } } }}>
+              }} required variant="standard" InputProps={{ disableUnderline: true }} SelectProps={{ MenuProps: { sx: { zIndex: 1601 } } }}>
                 {categories.filter((category) => category.type === 'EXPENSE' && !category.parentCategoryId).map((category) => <MenuItem key={category.id} value={category.id}><Box sx={{ display: 'flex', alignItems: 'center', gap: 1.25, color: '#fff' }}><Box sx={{ display: 'flex', color: category.color || 'text.secondary' }}>{getCategoryIcon(category.icon, category.name)}</Box>{category.name}</Box></MenuItem>)}
               </TextField>)}
-              {renderFieldBox('Subcategoria', <TextField select fullWidth value={txSubcategoryId || ''} onChange={(event) => setTxSubcategoryId(event.target.value)} disabled={!txCategoryId || !categories.some((category) => category.parentCategoryId === txCategoryId)} variant="standard" InputProps={{ disableUnderline: true }} SelectProps={{ MenuProps: { sx: { zIndex: 1501 } } }}>
+              {renderFieldBox('Subcategoria', <TextField select fullWidth value={txSubcategoryId || ''} onChange={(event) => setTxSubcategoryId(event.target.value)} disabled={!txCategoryId || !categories.some((category) => category.parentCategoryId === txCategoryId)} variant="standard" InputProps={{ disableUnderline: true }} SelectProps={{ MenuProps: { sx: { zIndex: 1601 } } }}>
                 {categories.filter((category) => category.parentCategoryId === txCategoryId).map((category) => <MenuItem key={category.id} value={category.id}><Box sx={{ display: 'flex', alignItems: 'center', gap: 1.25, color: '#fff' }}><Box sx={{ display: 'flex', color: category.color || 'text.secondary' }}>{getCategoryIcon(category.icon, category.name)}</Box>{category.name}</Box></MenuItem>)}
               </TextField>)}
-              {renderFieldBox('Conta', <TextField select fullWidth value={selectedTxAccountId} onChange={(event) => setTxAccountId(event.target.value)} disabled={Boolean(linkedCardAccountId)} required variant="standard" InputProps={{ disableUnderline: true }} SelectProps={{ MenuProps: { sx: { zIndex: 1501 } } }}>
+              {renderFieldBox('Conta', <TextField select fullWidth value={selectedTxAccountId} onChange={(event) => setTxAccountId(event.target.value)} disabled={Boolean(linkedCardAccountId)} required variant="standard" InputProps={{ disableUnderline: true }} SelectProps={{ MenuProps: { sx: { zIndex: 1601 } } }}>
                 {accounts.map((account) => <MenuItem key={account.id} value={account.id}><Box sx={{ display: 'flex', alignItems: 'center', gap: 1.25 }}><BankLogo icon={account.icon || 'bank'} customIconUrl={account.customIconUrl} name={account.name} color={account.color} /><Typography>{account.name}</Typography></Box></MenuItem>)}
               </TextField>)}
             </Box> : <>
@@ -2241,7 +2241,7 @@ const TransactionsPage: React.FC<TransactionsPageProps> = ({ composer, onCompose
                     value={user?.id || ''}
                     variant="standard"
                     InputProps={{ disableUnderline: true }}
-                    SelectProps={{ MenuProps: { sx: { zIndex: 1501 } } }}
+                    SelectProps={{ MenuProps: { sx: { zIndex: 1601 } } }}
                     sx={{ '& .MuiSelect-select': { color: "var(--color-text-primary, #FFFFFF)", py: 0.25, fontSize: '0.9rem' } }}
                   >
                     <MenuItem value={user?.id || ''}>{user?.fullName || user?.email || 'Usuário'}</MenuItem>
@@ -2268,7 +2268,7 @@ const TransactionsPage: React.FC<TransactionsPageProps> = ({ composer, onCompose
                         required
                         variant="standard"
                         InputProps={{ disableUnderline: true }}
-                        SelectProps={{ MenuProps: { sx: { zIndex: 1501 } } }}
+                        SelectProps={{ MenuProps: { sx: { zIndex: 1601 } } }}
                         sx={{ '& .MuiSelect-select': { color: "var(--color-text-primary, #FFFFFF)", py: 0.25, fontSize: '0.9rem' } }}
                       >
                         {cards.map((c) => (
@@ -2292,7 +2292,7 @@ const TransactionsPage: React.FC<TransactionsPageProps> = ({ composer, onCompose
                         required
                         variant="standard"
                         InputProps={{ disableUnderline: true }}
-                        SelectProps={{ MenuProps: { sx: { zIndex: 1501 } } }}
+                        SelectProps={{ MenuProps: { sx: { zIndex: 1601 } } }}
                         sx={{ '& .MuiSelect-select': { color: "var(--color-text-primary, #FFFFFF)", py: 0.25, fontSize: '0.9rem' } }}
                       >
                         {(() => {
@@ -2325,7 +2325,7 @@ const TransactionsPage: React.FC<TransactionsPageProps> = ({ composer, onCompose
                         required
                         variant="standard"
                         InputProps={{ disableUnderline: true }}
-                        SelectProps={{ MenuProps: { sx: { zIndex: 1501 } } }}
+                        SelectProps={{ MenuProps: { sx: { zIndex: 1601 } } }}
                         sx={{ '& .MuiSelect-select': { color: "var(--color-text-primary, #FFFFFF)", py: 0.25, fontSize: '0.9rem' } }}
                       >
                         {accounts.map((acc) => (
@@ -2349,7 +2349,7 @@ const TransactionsPage: React.FC<TransactionsPageProps> = ({ composer, onCompose
                         required
                         variant="standard"
                         InputProps={{ disableUnderline: true }}
-                        SelectProps={{ MenuProps: { sx: { zIndex: 1501 } } }}
+                        SelectProps={{ MenuProps: { sx: { zIndex: 1601 } } }}
                         sx={{ '& .MuiSelect-select': { color: "var(--color-text-primary, #FFFFFF)", py: 0.25, fontSize: '0.9rem' } }}
                       >
                         {accounts.map((acc) => (
@@ -2374,7 +2374,7 @@ const TransactionsPage: React.FC<TransactionsPageProps> = ({ composer, onCompose
                       required={!isCardExpense}
                       variant="standard"
                       InputProps={{ disableUnderline: true }}
-                      SelectProps={{ MenuProps: { sx: { zIndex: 1501 } } }}
+                      SelectProps={{ MenuProps: { sx: { zIndex: 1601 } } }}
                       sx={{ '& .MuiSelect-select': { color: "var(--color-text-primary, #FFFFFF)", py: 0.25, fontSize: '0.9rem' } }}
                     >
                       {accounts.map((acc) => (
@@ -2408,7 +2408,7 @@ const TransactionsPage: React.FC<TransactionsPageProps> = ({ composer, onCompose
                             required
                             variant="standard"
                             InputProps={{ disableUnderline: true }}
-                            SelectProps={{ MenuProps: { sx: { zIndex: 1501 } } }}
+                            SelectProps={{ MenuProps: { sx: { zIndex: 1601 } } }}
                             sx={{ '& .MuiSelect-select': { color: "var(--color-text-primary, #FFFFFF)", py: 0.25, fontSize: '0.9rem' } }}
                           >
                             {categories
@@ -2444,7 +2444,7 @@ const TransactionsPage: React.FC<TransactionsPageProps> = ({ composer, onCompose
                             disabled={!txCategoryId || categories.filter((c) => c.parentCategoryId === txCategoryId).length === 0}
                             variant="standard"
                             InputProps={{ disableUnderline: true }}
-                            SelectProps={{ MenuProps: { sx: { zIndex: 1501 } } }}
+                            SelectProps={{ MenuProps: { sx: { zIndex: 1601 } } }}
                             sx={{ '& .MuiSelect-select': { color: "var(--color-text-primary, #FFFFFF)", py: 0.25, fontSize: '0.9rem' } }}
                           >
                             {txSubcategoryId === '' && <MenuItem value="" sx={{ display: 'none' }} />}
@@ -2727,6 +2727,7 @@ const TransactionsPage: React.FC<TransactionsPageProps> = ({ composer, onCompose
       {/* DIALOG: Contabilizar no mês da efetivação? */}
       <Dialog
         open={futureConfirmOpen}
+        sx={transactionOverlaySx}
         onClose={() => {
           if (statusUpdateInProgress.current) return;
           setFutureConfirmOpen(false);
@@ -2803,6 +2804,7 @@ const TransactionsPage: React.FC<TransactionsPageProps> = ({ composer, onCompose
       <Dialog
         open={datePickerOpen}
         onClose={() => setDatePickerOpen(false)}
+        sx={transactionOverlaySx}
         PaperProps={{
           sx: {
             borderRadius: '16px',
@@ -2924,6 +2926,7 @@ const TransactionsPage: React.FC<TransactionsPageProps> = ({ composer, onCompose
       <Dialog
         open={timePickerOpen}
         onClose={() => setTimePickerOpen(false)}
+        sx={transactionOverlaySx}
         PaperProps={{
           sx: {
             borderRadius: '16px',
@@ -3156,6 +3159,7 @@ const TransactionsPage: React.FC<TransactionsPageProps> = ({ composer, onCompose
       <Dialog
         open={quickCatOpen}
         onClose={() => setQuickCatOpen(false)}
+        sx={transactionOverlaySx}
         maxWidth="xs"
         fullWidth
         PaperProps={{
@@ -3243,6 +3247,7 @@ const TransactionsPage: React.FC<TransactionsPageProps> = ({ composer, onCompose
       <Dialog
         open={quickSubOpen}
         onClose={() => setQuickSubOpen(false)}
+        sx={transactionOverlaySx}
         maxWidth="xs"
         fullWidth
         PaperProps={{

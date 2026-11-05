@@ -45,6 +45,16 @@ export const transactionPaperSx = {
 
 export const transactionContentSx = { p: { xs: 1.5, sm: 2 } };
 
+// Popups from a transaction form can be opened over another modal (for example
+// the card statement). Keep them above both the form and its parent dialog.
+export const transactionOverlaySx = { zIndex: 1600 };
+
+// Keep select menus above transaction dialogs when the form is rendered in a
+// modal (the default MUI menu layer otherwise shares the dialog's z-index).
+export const transactionSelectProps = {
+  MenuProps: { sx: { zIndex: 1601 } },
+};
+
 export const transactionHeaderSx = {
   display: 'flex', alignItems: 'center', justifyContent: 'space-between',
   gap: 1.5, px: { xs: 1.5, sm: 2 }, py: 1.25, flexShrink: 0,

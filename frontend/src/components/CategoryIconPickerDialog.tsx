@@ -41,6 +41,7 @@ const CategoryIconPickerDialog: React.FC<CategoryIconPickerDialogProps> = ({
     <Dialog
       open={open}
       onClose={handleClose}
+      sx={{ zIndex: 1601 }}
       maxWidth="xs"
       fullWidth
       PaperProps={{

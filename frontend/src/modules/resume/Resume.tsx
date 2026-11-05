@@ -1,6 +1,6 @@
 import RepeatConfigDialog from '../../components/RepeatConfigDialog';
 import RecurrenceDialog from '../../components/RecurrenceDialog';
-import { TransactionField, TransactionAmountField, transactionPaperSx, transactionHeaderSx, transactionContentSx, transactionColumnsSx, transactionPanelSx, transactionHeadingSx } from '../../components/TransactionFormLayout';
+import { TransactionField, TransactionAmountField, transactionPaperSx, transactionHeaderSx, transactionContentSx, transactionColumnsSx, transactionPanelSx, transactionHeadingSx, transactionSelectProps, transactionOverlaySx } from '../../components/TransactionFormLayout';
 import { buildSummaryCharts } from './summaryCharts';
 import CardBrandLogo from '../../components/CardBrandLogo';
 import React, { useState, useEffect } from 'react';
@@ -1219,7 +1219,7 @@ const Resume: React.FC = () => {
           setDescriptionSuggestionsOpen(false);
         }
       }}
-      slotProps={{ popper: { sx: { zIndex: 1501 } } }}
+      slotProps={{ popper: { sx: { zIndex: 1601 } } }}
       sx={{ flex: 1, minWidth: 0, width: '100%' }}
       noOptionsText="Nenhum lançamento parecido encontrado"
       renderOption={(props, transaction) => {
@@ -2143,6 +2143,7 @@ fullWidth
 value={user?.id || ''}
 variant="standard"
 InputProps={{ disableUnderline: true }}
+SelectProps={transactionSelectProps}
 sx={{ '& .MuiSelect-select': { color: "var(--color-text-primary, #FFFFFF)", py: 0.25, fontSize: '0.9rem' } }}
 >
 <MenuItem value={user?.id || ''}>{user?.fullName || user?.email || 'Usuário'}</MenuItem>
@@ -2167,6 +2168,7 @@ onChange={(e) => {
 required
 variant="standard"
 InputProps={{ disableUnderline: true }}
+SelectProps={transactionSelectProps}
 sx={{ '& .MuiSelect-select': { color: "var(--color-text-primary, #FFFFFF)", py: 0.25, fontSize: '0.9rem' } }}
 >
 {cards.map((c) => (
@@ -2190,6 +2192,7 @@ onChange={(e) => setTxDueDate(e.target.value)}
 required
 variant="standard"
 InputProps={{ disableUnderline: true }}
+SelectProps={transactionSelectProps}
 sx={{ '& .MuiSelect-select': { color: "var(--color-text-primary, #FFFFFF)", py: 0.25, fontSize: '0.9rem' } }}
 >
 {(() => {
@@ -2220,6 +2223,7 @@ onChange={(e) => setTxAccountId(e.target.value)}
 required
 variant="standard"
 InputProps={{ disableUnderline: true }}
+SelectProps={transactionSelectProps}
 sx={{ '& .MuiSelect-select': { color: "var(--color-text-primary, #FFFFFF)", py: 0.25, fontSize: '0.9rem' } }}
 >
 {accounts.map((acc) => (
@@ -2243,6 +2247,7 @@ onChange={(e) => setTxDestAccountId(e.target.value)}
 required
 variant="standard"
 InputProps={{ disableUnderline: true }}
+SelectProps={transactionSelectProps}
 sx={{ '& .MuiSelect-select': { color: "var(--color-text-primary, #FFFFFF)", py: 0.25, fontSize: '0.9rem' } }}
 >
 {accounts.map((acc) => (
@@ -2267,6 +2272,7 @@ onChange={(e) => setTxAccountId(e.target.value)}
 required={!isCardExpense}
 variant="standard"
 InputProps={{ disableUnderline: true }}
+SelectProps={transactionSelectProps}
 sx={{ '& .MuiSelect-select': { color: "var(--color-text-primary, #FFFFFF)", py: 0.25, fontSize: '0.9rem' } }}
 >
 {accounts.map((acc) => (
@@ -2300,6 +2306,7 @@ setTxSubcategoryId(defaultSub?.id || '');
 required
 variant="standard"
 InputProps={{ disableUnderline: true }}
+SelectProps={transactionSelectProps}
 sx={{ '& .MuiSelect-select': { color: "var(--color-text-primary, #FFFFFF)", py: 0.25, fontSize: '0.9rem' } }}
 >
 {categories
@@ -2335,6 +2342,7 @@ onChange={(e) => setTxSubcategoryId(e.target.value)}
 disabled={!txCategoryId || categories.filter((c) => c.parentCategoryId === txCategoryId).length === 0}
 variant="standard"
 InputProps={{ disableUnderline: true }}
+SelectProps={transactionSelectProps}
 sx={{ '& .MuiSelect-select': { color: "var(--color-text-primary, #FFFFFF)", py: 0.25, fontSize: '0.9rem' } }}
 >
 {txSubcategoryId === '' && <MenuItem value="" sx={{ display: 'none' }} />}
@@ -2615,6 +2623,7 @@ sx={{ '& textarea': { color: "var(--color-text-primary, #FFFFFF)", fontSize: '0.
       <Dialog
         open={datePickerOpen}
         onClose={() => setDatePickerOpen(false)}
+        sx={transactionOverlaySx}
         PaperProps={{
           sx: {
             borderRadius: '16px',
@@ -2800,6 +2809,7 @@ sx={{ '& textarea': { color: "var(--color-text-primary, #FFFFFF)", fontSize: '0.
       <Dialog
         open={timePickerOpen}
         onClose={() => setTimePickerOpen(false)}
+        sx={transactionOverlaySx}
         PaperProps={{
           sx: {
             borderRadius: '16px',
@@ -3217,6 +3227,7 @@ sx={{ '& textarea': { color: "var(--color-text-primary, #FFFFFF)", fontSize: '0.
       <Dialog
         open={quickCatOpen}
         onClose={() => setQuickCatOpen(false)}
+        sx={transactionOverlaySx}
         maxWidth="xs"
         fullWidth
         PaperProps={{
@@ -3304,6 +3315,7 @@ sx={{ '& textarea': { color: "var(--color-text-primary, #FFFFFF)", fontSize: '0.
       <Dialog
         open={quickSubOpen}
         onClose={() => setQuickSubOpen(false)}
+        sx={transactionOverlaySx}
         maxWidth="xs"
         fullWidth
         PaperProps={{

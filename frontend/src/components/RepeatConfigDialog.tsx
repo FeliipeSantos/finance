@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react';
 import { Box, Button, Dialog, IconButton, MenuItem, TextField, Typography } from '@mui/material';
 import { Add, Remove, Close, CalendarMonthOutlined, Language, Sync } from '@mui/icons-material';
+import { transactionOverlaySx } from './TransactionFormLayout';
 
 const border = '1px solid var(--color-border)';
 const secondary = 'var(--color-text-secondary, #7E8494)';
@@ -61,7 +62,7 @@ export default function RepeatConfigDialog({ open, onClose, startInstallment, in
   onPeriodicityChange: (value: string) => void;
 }) {
   return (
-    <Dialog open={open} onClose={onClose} PaperProps={{ 'aria-label': 'Configurar Repetição', sx: {
+    <Dialog open={open} onClose={onClose} sx={transactionOverlaySx} PaperProps={{ 'aria-label': 'Configurar Repetição', sx: {
       width: 'calc(100% - 24px)', maxWidth: 400, m: 1.5, border, borderRadius: '12px',
       bgcolor: 'var(--color-panel, #111217)', color: 'var(--color-text-primary, #FFFFFF)', backgroundImage: 'none',
     } }}>
@@ -92,6 +93,7 @@ export default function RepeatConfigDialog({ open, onClose, startInstallment, in
             size="small" SelectProps={{
               inputProps: { 'aria-label': 'Periodicidade' },
               MenuProps: {
+                sx: { zIndex: 1601 },
                 PaperProps: { sx: {
                   mt: 0.5, border, borderRadius: '8px',
                   bgcolor: 'var(--color-panel, #111217)', backgroundImage: 'none',
