@@ -579,7 +579,9 @@ const TransactionsPage: React.FC<TransactionsPageProps> = ({ composer, onCompose
         installmentsCount: recurrenceType === 'PARCELADA' ? installmentsCount : null,
         effective: txEffective,
         effectiveDate: txEffective ? txEffectiveDate : null,
-        recurrenceType: recurrenceType,
+        // Editing an existing transaction must update only that occurrence;
+        // recurrence is chosen only when creating a new transaction.
+        recurrenceType: isEditing ? 'NP' : recurrenceType,
         startInstallment: recurrenceType === 'PARCELADA' ? startInstallment : null,
         periodicity: recurrenceType === 'PARCELADA' ? periodicity : null,
         valueType: recurrenceType === 'PARCELADA' ? valueType : null,
@@ -2495,8 +2497,14 @@ const TransactionsPage: React.FC<TransactionsPageProps> = ({ composer, onCompose
                 ))}
 
                 {/* Recorrência */}
-                {isEditing && activeTx && isInstallmentTransaction(activeTx.description) ? renderFieldBox('Recorrência', (
-                  <Typography sx={{ color: 'var(--color-text-primary, #FFFFFF)', fontSize: '0.9rem' }}>Parcelada</Typography>
+                {isEditing && activeTx ? renderFieldBox('Recorrência', (
+                  <Typography sx={{ color: 'var(--color-text-primary, #FFFFFF)', fontSize: '0.9rem' }}>
+                    {isFixedTransaction(activeTx.description)
+                      ? 'Fixa mensal'
+                      : isInstallmentTransaction(activeTx.description)
+                        ? 'Parcelada'
+                        : 'Não recorrente'}
+                  </Typography>
                 )) : renderFieldBox('Recorrência', (
                   <Box
                     onClick={() => setRecurrenceDialogOpen(true)}
