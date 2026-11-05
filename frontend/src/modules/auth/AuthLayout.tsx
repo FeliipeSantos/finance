@@ -3,6 +3,7 @@ import { Box, Link, Paper, Tab, Tabs, Typography } from '@mui/material';
 import { Link as RouterLink } from 'react-router-dom';
 import BrandLogo from '../../components/BrandLogo';
 import { useBranding } from '../../hooks/useBranding';
+import { APP_VERSION } from '../../config/version';
 
 export default function AuthLayout({ mode, busy, children }: {
   mode: 'login' | 'register' | 'portal';
@@ -49,7 +50,15 @@ export default function AuthLayout({ mode, busy, children }: {
           {children}
         </Paper>
         <Box sx={{ textAlign: 'center', mt: 2.5 }}>
-          <Link component={RouterLink} to={isPortal ? '/login' : '/portal'} underline="hover" sx={{ color: 'text.secondary', fontSize: '.8rem' }}>{isPortal ? `Voltar ao ${branding.name}` : `Portal.${branding.name}`}</Link>
+          {isPortal ? (
+            <Link component={RouterLink} to="/login" underline="hover" sx={{ color: 'text.secondary', fontSize: '.8rem' }}>
+              Voltar ao {branding.name}
+            </Link>
+          ) : (
+            <Typography component="p" sx={{ color: 'text.secondary', fontSize: '.8rem', m: 0 }}>
+              Versão {APP_VERSION}
+            </Typography>
+          )}
         </Box>
       </Box>
     </Box>

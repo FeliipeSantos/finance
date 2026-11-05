@@ -47,6 +47,7 @@ import BrandLogo from './BrandLogo';
 import { useBranding } from '../hooks/useBranding';
 import EditProfileDialog from './EditProfileDialog';
 import { useColorMode } from '../theme/colorMode';
+import { APP_VERSION } from '../config/version';
 
 // ── Layout dimensions ──────────────────────────────────────────
 const COLLAPSED_SIDEBAR_WIDTH = 68;
@@ -409,6 +410,21 @@ const Layout: React.FC = () => {
 
         </>
       )}
+      <Typography
+        component="p"
+        aria-label={`Versão ${APP_VERSION}`}
+        sx={{
+          color: TEXT_MUTED,
+          fontSize: isExpanded ? '.7rem' : '.62rem',
+          textAlign: 'center',
+          whiteSpace: 'nowrap',
+          mt: 'auto',
+          pt: 1.5,
+          mb: 0,
+        }}
+      >
+        {isExpanded ? `Versão ${APP_VERSION}` : `v${APP_VERSION}`}
+      </Typography>
     </Box>
   );
 
