@@ -143,6 +143,31 @@ interface Transaction {
   updatedAt?: string;
 }
 
+interface TransactionPayload {
+  description: string;
+  value: number;
+  date: string;
+  dueDate: string | null;
+  type: 'REVENUE' | 'EXPENSE' | 'TRANSFER';
+  accountId: string | null;
+  destinationAccountId: string | null;
+  categoryId: string | null;
+  creditCardId: string | null;
+  notes: string;
+  tags: string;
+  installmentsCount: number | null;
+  effective: boolean;
+  effectiveDate: string | null;
+  recurrenceType: 'NP' | 'PARCELADA' | 'FIXA';
+  startInstallment: number | null;
+  periodicity: string | null;
+  valueType: 'total' | 'parcela' | null;
+}
+
+const isRecurringTransaction = (transaction: Transaction) => Boolean(transaction.recurrenceGroupId)
+  || isFixedTransaction(transaction.description)
+  || isInstallmentTransaction(transaction.description);
+
 const AVAILABLE_COLORS = [
   { value: '#EC407A', label: 'Rosa' },
   { value: '#5C6BC0', label: 'Azul Escuro' },
@@ -352,9 +377,12 @@ const TransactionsPage: React.FC<TransactionsPageProps> = ({ composer, onCompose
   const [datePickerTarget, setDatePickerTarget] = useState<'VENCIMENTO' | 'EFETIVACAO' | 'LANCAMENTO'>('VENCIMENTO');
   const [deleteConfirmOpen, setDeleteConfirmOpen] = useState(false);
   const [recurrentDeleteOpen, setRecurrentDeleteOpen] = useState(false);
+  const [recurrentEditOpen, setRecurrentEditOpen] = useState(false);
+  const [pendingRecurrentEdit, setPendingRecurrentEdit] = useState<TransactionPayload | null>(null);
+  const [updatingRecurrent, setUpdatingRecurrent] = useState(false);
+  const [reorganizeInstallments, setReorganizeInstallments] = useState(true);
   const [deleting, setDeleting] = useState(false);
   const deleteInProgress = useRef(false);
-  const [reorganize, setReorganize] = useState(true);
 
   // Recurrence states
   const [recurrenceType, setRecurrenceType] = useState<'NP' | 'PARCELADA' | 'FIXA'>('NP');
@@ -564,7 +592,7 @@ const TransactionsPage: React.FC<TransactionsPageProps> = ({ composer, onCompose
   const handleSubmitTx = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const payload = {
+      const payload: TransactionPayload = {
         description: isEditing && activeTx ? restoreTransactionDescription(txDesc, activeTx.description) : txDesc,
         value: isRefundExpense ? -Math.abs(parseBRLToFloat(txValue)) : parseBRLToFloat(txValue),
         date: txDate,
@@ -588,6 +616,11 @@ const TransactionsPage: React.FC<TransactionsPageProps> = ({ composer, onCompose
       };
 
       if (isEditing && activeTx) {
+        if (isRecurringTransaction(activeTx)) {
+          setPendingRecurrentEdit(payload);
+          setRecurrentEditOpen(true);
+          return;
+        }
         await api.put(`/transactions/${activeTx.id}`, payload);
       } else {
         await api.post('/transactions', payload);
@@ -602,6 +635,33 @@ const TransactionsPage: React.FC<TransactionsPageProps> = ({ composer, onCompose
       }
     } catch (err: any) {
       alert(err.response?.data?.message || 'Erro ao registrar transação.');
+    }
+  };
+
+  const handleConfirmEditRecurrent = async (updateType: 'ONLY_CURRENT' | 'CURRENT_AND_FUTURE' | 'ALL') => {
+    if (!activeTx || !pendingRecurrentEdit || updatingRecurrent) return;
+    setUpdatingRecurrent(true);
+    try {
+      if (updateType === 'ONLY_CURRENT') {
+        await api.put(`/transactions/${activeTx.id}`, pendingRecurrentEdit);
+      } else {
+        await api.put(`/transactions/${activeTx.id}/recurrent`, pendingRecurrentEdit, {
+          params: { update_type: updateType },
+        });
+      }
+      setRecurrentEditOpen(false);
+      setPendingRecurrentEdit(null);
+      if (composer) {
+        await onComposerSaved?.();
+        handleCloseModal();
+      } else {
+        handleCloseModal();
+        fetchData();
+      }
+    } catch (err: any) {
+      alert(err.response?.data?.detail || err.response?.data?.message || 'Erro ao atualizar os lançamentos recorrentes.');
+    } finally {
+      setUpdatingRecurrent(false);
     }
   };
 
@@ -951,7 +1011,10 @@ const TransactionsPage: React.FC<TransactionsPageProps> = ({ composer, onCompose
     setMenuAnchor(null);
     if (!transaction) return;
     setActiveTx(transaction);
-    if (/^(.*?)\s+(\d+)\/(\d+)$/.test(transaction.description)) {
+    if (transaction.recurrenceGroupId
+      || isFixedTransaction(transaction.description)
+      || isInstallmentTransaction(transaction.description)) {
+      setReorganizeInstallments(!isFixedTransaction(transaction.description));
       setRecurrentDeleteOpen(true);
     } else {
       setDeleteConfirmOpen(true);
@@ -966,7 +1029,7 @@ const TransactionsPage: React.FC<TransactionsPageProps> = ({ composer, onCompose
       await api.delete(`/transactions/${activeTx.id}/recurrent`, {
         params: {
           delete_type: deleteType,
-          reorganize: reorganize
+          reorganize: !isFixedTransaction(activeTx.description) && reorganizeInstallments,
         }
       });
       setRecurrentDeleteOpen(false);
@@ -1786,6 +1849,7 @@ const TransactionsPage: React.FC<TransactionsPageProps> = ({ composer, onCompose
       {/* DIALOG: Confirm Delete */}
       <Dialog
         open={deleteConfirmOpen}
+        sx={transactionOverlaySx}
         onClose={() => { if (!deleting) setDeleteConfirmOpen(false); }}
         PaperProps={{
           sx: {
@@ -1843,6 +1907,7 @@ const TransactionsPage: React.FC<TransactionsPageProps> = ({ composer, onCompose
       {/* DIALOG: Recurrent Delete Confirm */}
       <Dialog
         open={recurrentDeleteOpen}
+        sx={transactionOverlaySx}
         onClose={() => { if (!deleting) setRecurrentDeleteOpen(false); }}
         PaperProps={{
           sx: {
@@ -1863,7 +1928,9 @@ const TransactionsPage: React.FC<TransactionsPageProps> = ({ composer, onCompose
               O que você deseja?
             </Typography>
             <Typography sx={{ color: "var(--color-text-secondary, #7E8494)", fontSize: '0.9rem', lineHeight: 1.5 }}>
-              Essa operação fará com que o saldo da conta seja recalculado desde a data do primeiro lançamento.
+              {activeTx && isFixedTransaction(activeTx.description)
+                ? 'Escolha se deseja excluir somente este lançamento fixo ou este e os próximos.'
+                : 'Essa operação fará com que o saldo da conta seja recalculado desde a data do primeiro lançamento.'}
             </Typography>
           </Box>
 
@@ -1922,7 +1989,7 @@ const TransactionsPage: React.FC<TransactionsPageProps> = ({ composer, onCompose
               Excluir esta e as próximas
             </Button>
 
-            <Button
+            {activeTx && !isFixedTransaction(activeTx.description) && <Button
               fullWidth
               variant="outlined"
               onClick={() => handleConfirmDeleteRecurrent('ALL')}
@@ -1947,31 +2014,84 @@ const TransactionsPage: React.FC<TransactionsPageProps> = ({ composer, onCompose
               }}
             >
               Excluir todas
-            </Button>
+            </Button>}
           </Box>
-
-          <Box sx={{ mt: 1 }}>
+          {activeTx && !isFixedTransaction(activeTx.description) && (
             <FormControlLabel
-              control={
+              control={(
                 <Checkbox
-                  checked={reorganize}
+                  checked={reorganizeInstallments}
                   disabled={deleting}
-                  onChange={(e) => setReorganize(e.target.checked)}
-                  color="secondary"
+                  onChange={(event) => setReorganizeInstallments(event.target.checked)}
                   sx={{
-                    color: "rgba(var(--color-overlay-rgb, 255, 255, 255), 0.3)",
-                    '&.Mui-checked': {
-                      color: "var(--color-expense, #E05A5A)",
-                    }
+                    color: 'rgba(var(--color-overlay-rgb, 255, 255, 255), 0.3)',
+                    '&.Mui-checked': { color: 'var(--color-expense, #E05A5A)' },
                   }}
                 />
-              }
-              label={
-                <Typography sx={{ fontSize: '0.9rem', color: "var(--color-text-secondary, #7E8494)", fontWeight: 500 }}>
+              )}
+              label={(
+                <Typography sx={{ fontSize: '0.9rem', color: 'var(--color-text-secondary, #7E8494)', fontWeight: 500 }}>
                   Atualizar o número de parcelas
                 </Typography>
-              }
+              )}
             />
+          )}
+        </DialogContent>
+      </Dialog>
+
+      {/* DIALOG: Apply edits to a recurring series */}
+      <Dialog
+        open={recurrentEditOpen}
+        sx={transactionOverlaySx}
+        onClose={() => {
+          if (updatingRecurrent) return;
+          setRecurrentEditOpen(false);
+          setPendingRecurrentEdit(null);
+        }}
+        PaperProps={{ sx: {
+          borderRadius: '24px', bgcolor: 'var(--color-panel, #111217)', backgroundImage: 'none',
+          border: '1px solid var(--color-border)', color: 'var(--color-text-primary, #FFFFFF)',
+          p: 4, maxWidth: '420px', width: '100%',
+        } }}
+      >
+        <DialogContent sx={{ p: 0, display: 'flex', flexDirection: 'column', gap: 2.5 }}>
+          <Box>
+            <Typography variant="h6" sx={{ fontWeight: 700, mb: 1, fontSize: '1.25rem' }}>
+              O que você deseja?
+            </Typography>
+            <Typography sx={{ color: 'var(--color-text-secondary, #7E8494)', fontSize: '0.9rem', lineHeight: 1.5 }}>
+              Essa operação fará com que o saldo da conta seja recalculado desde a data do primeiro lançamento.
+            </Typography>
+          </Box>
+          <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1.5, mt: 1 }}>
+            <Button fullWidth variant="outlined" disabled={updatingRecurrent}
+              onClick={() => handleConfirmEditRecurrent('ONLY_CURRENT')}
+              startIcon={<CheckCircleIcon sx={{ color: '#4EBE87' }} />}
+              sx={{ justifyContent: 'flex-start', textTransform: 'none', color: 'var(--color-text-primary, #FFFFFF)', borderRadius: '12px', py: 1.8, px: 2.5, fontWeight: 600, fontSize: '0.95rem' }}>
+              Alterar apenas esta
+            </Button>
+            <Button fullWidth variant="outlined" disabled={updatingRecurrent}
+              onClick={() => handleConfirmEditRecurrent('CURRENT_AND_FUTURE')}
+              startIcon={<EditIcon sx={{ color: '#4EBE87' }} />}
+              sx={{ justifyContent: 'flex-start', textTransform: 'none', color: 'var(--color-text-primary, #FFFFFF)', borderRadius: '12px', py: 1.8, px: 2.5, fontWeight: 600, fontSize: '0.95rem' }}>
+              Alterar esta e as próximas
+            </Button>
+            {activeTx && !isFixedTransaction(activeTx.description) && (
+              <Button fullWidth variant="outlined" disabled={updatingRecurrent}
+                onClick={() => handleConfirmEditRecurrent('ALL')}
+                startIcon={<DeleteSweepIcon sx={{ color: '#4EBE87' }} />}
+                sx={{ justifyContent: 'flex-start', textTransform: 'none', color: 'var(--color-text-primary, #FFFFFF)', borderRadius: '12px', py: 1.8, px: 2.5, fontWeight: 600, fontSize: '0.95rem' }}>
+                Alterar todas
+              </Button>
+            )}
+          </Box>
+          <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
+            <Button disabled={updatingRecurrent} onClick={() => {
+              setRecurrentEditOpen(false);
+              setPendingRecurrentEdit(null);
+            }} sx={{ color: 'var(--color-text-secondary, #7E8494)', textTransform: 'none' }}>
+              Cancelar
+            </Button>
           </Box>
         </DialogContent>
       </Dialog>
@@ -3370,6 +3490,10 @@ const TransactionsPage: React.FC<TransactionsPageProps> = ({ composer, onCompose
         month={queryMonth}
         year={queryYear}
         onSelectTransaction={(tx) => handleOpenDetails(tx as Transaction)}
+        onEditTransaction={(tx) => {
+          const transaction = transactions.find((item) => item.id === tx.id);
+          if (transaction) handleOpenEdit(transaction);
+        }}
         onAddExpense={(dueDateISO) => {
           if (statementTarget) handleAddCardExpenseFromStatement(statementTarget.card, dueDateISO);
         }}

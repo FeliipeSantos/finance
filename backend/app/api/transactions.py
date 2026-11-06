@@ -24,6 +24,38 @@ def add_months(sourcedate: datetime.date, months: int) -> datetime.date:
         31, 30, 31, 30, 31, 31, 30, 31, 30, 31][month-1])
     return datetime.date(year, month, day)
 
+def _advance_recurrence_date(base_date: datetime.date, steps: int, interval: str) -> datetime.date:
+    if interval == "weekly":
+        return base_date + datetime.timedelta(weeks=steps)
+    if interval == "biweekly":
+        return base_date + datetime.timedelta(days=15 * steps)
+    if interval == "annual":
+        return add_months(base_date, 12 * steps)
+    return add_months(base_date, steps)
+
+def _infer_recurrence_interval(sequence: list[Transaction]) -> str:
+    candidates = ("weekly", "biweekly", "monthly", "annual")
+    errors = {candidate: 0 for candidate in candidates}
+    observations = 0
+
+    for previous, following in zip(sequence, sequence[1:]):
+        steps = (following.recurrence_index or 0) - (previous.recurrence_index or 0)
+        if steps <= 0:
+            continue
+        for field in ("date", "due_date"):
+            start = getattr(previous, field)
+            end = getattr(following, field)
+            if start is None or end is None:
+                continue
+            observations += 1
+            for candidate in candidates:
+                predicted = _advance_recurrence_date(start, steps, candidate)
+                errors[candidate] += abs((predicted - end).days)
+
+    if not observations:
+        return "monthly"
+    return min(candidates, key=lambda candidate: errors[candidate])
+
 def get_account_or_throw(db: Session, account_id: UUID, user_id: UUID) -> Account:
     account = account_repo.find_by_id_and_user_id(db, account_id, user_id)
     if not account:
@@ -580,6 +612,107 @@ def update_transaction(
     after = build_transaction_response(transaction, db)
     AuditLogService.log_event(current_user.id, "UPDATE", "TRANSACTION", transaction.id, before, after)
     return after
+
+@router.put("/{id}/recurrent", response_model=TransactionResponse)
+def update_recurrent_transaction(
+    id: UUID,
+    request: TransactionRequest,
+    update_type: Literal["CURRENT_AND_FUTURE", "ALL"],
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db),
+):
+    transaction = transaction_repo.find_by_id_and_user_id(db, id, current_user.id)
+    if not transaction:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Transação não encontrada")
+    if transaction.recurrence_group_id is None:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Não foi possível localizar a série recorrente deste lançamento.",
+        )
+
+    validate_category(db, request.category_id, current_user.id)
+    card = validate_card(db, request.credit_card_id, current_user.id)
+    if card and card.account_id:
+        request.account_id = card.account_id
+
+    all_transactions = transaction_repo.find_by_user_id(db, current_user.id)
+    sequence = sorted(
+        (tx for tx in all_transactions if tx.recurrence_group_id == transaction.recurrence_group_id),
+        key=lambda tx: (tx.recurrence_index or 0, tx.date, str(tx.id)),
+    )
+    if update_type == "CURRENT_AND_FUTURE":
+        current_index = transaction.recurrence_index or 0
+        selected = [tx for tx in sequence if (tx.recurrence_index or 0) >= current_index]
+    else:
+        selected = sequence
+
+    if not selected:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Série recorrente não encontrada")
+
+    requested_due_date = request.due_date or request.date
+    original_due_date = transaction.due_date or transaction.date
+    date_changed = request.date != transaction.date
+    due_date_changed = requested_due_date != original_due_date
+    recurrence_interval = _infer_recurrence_interval(sequence)
+    current_index = transaction.recurrence_index or 0
+    effective_changed = request.effective is not None and request.effective != transaction.effective
+    effective_date_delta = None
+    if request.effective_date and transaction.effective_date:
+        effective_date_delta = request.effective_date - transaction.effective_date
+
+    installment_marker = re.compile(r"\s+\d+/\d+\s*$")
+    fixed_marker = re.compile(r"\s*\[Fix[ao]\]\s*$", re.IGNORECASE)
+    requested_description = fixed_marker.sub("", installment_marker.sub("", request.description)).strip()
+
+    audit_entries = []
+    for target in selected:
+        before = build_transaction_response(target, db)
+        reverse_transaction_balances(db, target)
+        recurrence_offset = (target.recurrence_index or current_index) - current_index
+
+        target.account_id = request.account_id
+        target.destination_account_id = request.destination_account_id
+        target.category_id = request.category_id
+        target.credit_card_id = request.credit_card_id
+        target.value = request.value
+        if date_changed:
+            target.date = _advance_recurrence_date(request.date, recurrence_offset, recurrence_interval)
+        if due_date_changed:
+            target.due_date = _advance_recurrence_date(requested_due_date, recurrence_offset, recurrence_interval)
+        target.type = request.type
+        marker = installment_marker.search(target.description)
+        fixed = fixed_marker.search(target.description)
+        if marker:
+            target.description = f"{requested_description} {marker.group(0).strip()}"
+        elif fixed:
+            target.description = f"{requested_description} {fixed.group(0).strip()}"
+        else:
+            target.description = requested_description
+        target.notes = request.notes
+        target.attachments_url = request.attachments_url
+        target.tags = request.tags
+
+        if target.id == transaction.id or effective_changed:
+            target.effective = request.effective if request.effective is not None else target.effective
+        if target.id == transaction.id:
+            target.effective_date = request.effective_date
+        elif effective_changed:
+            target.effective_date = target.date if target.effective else None
+        elif target.effective and target.effective_date and effective_date_delta is not None:
+            target.effective_date = target.effective_date + effective_date_delta
+
+        apply_transaction_balances(db, target)
+        db.add(target)
+        audit_entries.append((target, before))
+
+    db.commit()
+    for target, before in audit_entries:
+        db.refresh(target)
+        after = build_transaction_response(target, db)
+        AuditLogService.log_event(current_user.id, "UPDATE", "TRANSACTION", target.id, before, after)
+
+    db.refresh(transaction)
+    return build_transaction_response(transaction, db)
 
 @router.patch("/{id}/description", response_model=TransactionResponse)
 def update_transaction_description(
